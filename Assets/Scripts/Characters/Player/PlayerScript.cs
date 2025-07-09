@@ -52,6 +52,7 @@ public class PlayerScript : MonoBehaviour
         {
             HandlePlayerMovement();
             HandleJumpInput();
+            HandleNpcInteraction();
         }
 
         isGrounded = IsTouchingGround();
@@ -117,7 +118,6 @@ public class PlayerScript : MonoBehaviour
 
         if (!initialSpawnDone)
         {
-            // Karakterin ayak altından doğrudan aşağıya raycast
             Vector3 rayOrigin = transform.position + Vector3.up * 1.5f;
             Vector3 rayDir = Vector3.down;
 
@@ -125,7 +125,6 @@ public class PlayerScript : MonoBehaviour
             {
                 float offset = capsuleCollider.height / 2f + 0.05f;
                 playerRb.position = hit.point + Vector3.up * offset;
-
                 Debug.Log($"✅ Zemin raycast ile yerleştirildi. Hit: {hit.collider.name}");
             }
             else
@@ -138,7 +137,6 @@ public class PlayerScript : MonoBehaviour
 
         transform.SetParent(boatTransform, true);
     }
-
 
     private void EnableTPSMode()
     {
@@ -288,5 +286,26 @@ public class PlayerScript : MonoBehaviour
         capsuleCollider.height = modelHeight;
         capsuleCollider.center = new Vector3(0, centerY - transform.position.y, 0);
         capsuleCollider.radius = radius;
+    }
+
+    /// <summary>
+    /// E tuşuyla bakılan NPC'ye Greet() tetikler
+    /// </summary>
+    private void HandleNpcInteraction()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            if (firstPersonCamera == null) return;
+
+            Ray ray = new Ray(firstPersonCamera.transform.position, firstPersonCamera.transform.forward);
+            if (Physics.Raycast(ray, out RaycastHit hit, 3f, ~0, QueryTriggerInteraction.Ignore))
+            {
+                NpcScript npc = hit.collider.GetComponent<NpcScript>();
+                if (npc != null)
+                {
+                    npc.Greet();
+                }
+            }
+        }
     }
 }
