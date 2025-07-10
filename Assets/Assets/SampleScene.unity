@@ -332,10 +332,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 1
+  m_Radius: 0.21846959
+  m_Height: 1.9063382
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.9, z: 0.035190966}
 --- !u!114 &14080532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -348,6 +348,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2448b7fd2d7840428f72c934a06e650, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  walkSpeed: 1
+  idleTime: 3
+  walkTime: 4
 --- !u!1001 &146563202
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1950,11 +1953,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dcca665fd3960ed4e9800b0df3a5570b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.136322
+      value: -3.29
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dcca665fd3960ed4e9800b0df3a5570b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 76.86283
+      value: 76.85
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dcca665fd3960ed4e9800b0df3a5570b, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1996,6 +1999,21 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 2d6b836f0c6995d4ca7baacd55337b77, type: 2}
+    - target: {fileID: 5866666021909216657, guid: dcca665fd3960ed4e9800b0df3a5570b, type: 3}
+      propertyPath: m_WarningMessage
+      value: "\nBinding warning: Some generic clip(s) animate transforms that are
+        already bound by a Humanoid avatar. These transforms can only be changed
+        by Humanoid clips.\n\tTransform 'mixamorig4:Hips'\n\tTransform 'mixamorig4:RightHandMiddle2'\n\tTransform
+        'mixamorig4:LeftToeBase'\n\tTransform 'mixamorig4:LeftHandThumb2'\n\tTransform
+        'mixamorig4:RightHandRing2'\n\tTransform 'mixamorig4:RightToeBase'\n\tTransform
+        'mixamorig4:RightHandThumb1'\n\tTransform 'mixamorig4:RightArm'\n\tTransform
+        'mixamorig4:LeftHandIndex1'\n\tTransform 'mixamorig4:RightHandIndex3'\n\tand
+        more ...\n\tFrom animation clip 'NPCIdle'\n\tFrom animation clip 'NPCWalking'"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: dcca665fd3960ed4e9800b0df3a5570b, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
