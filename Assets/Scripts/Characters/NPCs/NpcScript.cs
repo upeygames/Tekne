@@ -1,85 +1,82 @@
 ﻿using UnityEngine;
 
+[RequireComponent(typeof(Animator))]
 public class NpcScript : MonoBehaviour
 {
-    private Animator animator;
-    private Transform player;
-
     [Header("Gezinme Ayarları")]
-    [SerializeField] private float walkSpeed = 1f;
-    [SerializeField] private float idleTime = 3f;
-    [SerializeField] private float walkTime = 4f;
+    public float walkSpeed = 1f;
+    public float idleTime = 3f;
+    public float walkTime = 4f;
 
-    private float stateTimer = 0f;
+    [Header("Tekne Referansı")]
+    public Transform boatTransform;
+
+    private Animator animator;
+    private float timer;
     private bool isWalking = false;
     private Vector3 walkDirection;
+    private Vector3 offsetFromBoat;
 
-    void Start()
+    private void Start()
     {
         animator = GetComponent<Animator>();
-        player = GameObject.FindGameObjectWithTag("Player")?.transform;
 
-        stateTimer = idleTime;
-        ChooseNewDirection();
-    }
-
-    void Update()
-    {
-        HandleWalkingCycle();
-    }
-
-    private void HandleWalkingCycle()
-    {
-        stateTimer -= Time.deltaTime;
-
-        if (isWalking)
+        if (boatTransform != null)
         {
-            // Yönü sabit bir yöne doğru yürüt
-            transform.Translate(walkDirection * walkSpeed * Time.deltaTime, Space.World);
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(walkDirection), 5f * Time.deltaTime);
+            // NPC'yi zeminle hizala (tekneye göre)
+            if (Physics.Raycast(transform.position + Vector3.up * 1f, Vector3.down, out RaycastHit hit, 5f))
+            {
+                transform.position = hit.point;
+            }
 
-            if (stateTimer <= 0f)
-                StopWalking();
+            // Offset'i HİZALANMIŞ pozisyona göre al
+            offsetFromBoat = transform.position - boatTransform.position;
         }
         else
         {
-            if (stateTimer <= 0f)
-                StartWalking();
+            Debug.LogWarning("⚠ boatTransform atanmadı!");
         }
-    }
 
-    private void StartWalking()
-    {
-        isWalking = true;
-        stateTimer = walkTime;
-        animator.SetBool("isWalking", true);
-        ChooseNewDirection();
-    }
-
-    private void StopWalking()
-    {
-        isWalking = false;
-        stateTimer = idleTime;
+        timer = idleTime;
         animator.SetBool("isWalking", false);
     }
 
-    private void ChooseNewDirection()
+    private void Update()
     {
-        Vector2 random2D = Random.insideUnitCircle.normalized;
-        walkDirection = new Vector3(random2D.x, 0f, random2D.y);
+        if (boatTransform == null) return;
+
+        // NPC pozisyonunu tekneye göre sabitle
+        transform.position = boatTransform.position + offsetFromBoat;
+
+        timer -= Time.deltaTime;
+
+        if (isWalking)
+        {
+            offsetFromBoat += walkDirection * walkSpeed * Time.deltaTime;
+
+            if (timer <= 0f)
+            {
+                isWalking = false;
+                animator.SetBool("isWalking", false);
+                timer = idleTime;
+            }
+        }
+        else
+        {
+            if (timer <= 0f)
+            {
+                isWalking = true;
+                animator.SetBool("isWalking", true);
+                timer = walkTime;
+
+                walkDirection = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized;
+                transform.rotation = Quaternion.LookRotation(walkDirection);
+            }
+        }
     }
 
-    // Bu zaten vardı, değiştirmiyoruz
     public void Greet()
     {
-        if (player != null)
-        {
-            Vector3 lookPos = player.position;
-            lookPos.y = transform.position.y;
-            transform.LookAt(lookPos);
-        }
-
-        animator.SetTrigger("Greet");
-        Debug.Log("👋 NPC: Selam animasyonu tetiklendi.");
+        animator?.SetTrigger("Talk");
     }
 }

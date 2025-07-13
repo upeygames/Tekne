@@ -82,6 +82,14 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
+    private void LateUpdate()
+    {
+        if (!isFPSMode)
+        {
+            UpdateTPSCameraPosition();
+        }
+    }
+
     private void HandleModeSwitch()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1) && !isFPSMode)
@@ -123,7 +131,7 @@ public class PlayerScript : MonoBehaviour
 
             if (Physics.Raycast(rayOrigin, rayDir, out RaycastHit hit, 5f, ~0, QueryTriggerInteraction.Ignore))
             {
-                float offset = capsuleCollider.height / 2f + 0.05f;
+                float offset = 0.85f; // ✅ Bu sabit offset karakteri tam tekne zeminine yerleştirir
                 playerRb.position = hit.point + Vector3.up * offset;
                 Debug.Log($"✅ Zemin raycast ile yerleştirildi. Hit: {hit.collider.name}");
             }
@@ -137,6 +145,7 @@ public class PlayerScript : MonoBehaviour
 
         transform.SetParent(boatTransform, true);
     }
+
 
     private void EnableTPSMode()
     {
@@ -171,6 +180,17 @@ public class PlayerScript : MonoBehaviour
             newPos.y = waterSurface.position.y + 0.5f;
             transform.position = newPos;
         }
+
+        UpdateTPSCameraPosition(); // Başlangıçta bir kere konumlandır
+    }
+
+    private void UpdateTPSCameraPosition()
+    {
+        if (thirdPersonCamera == null || boatTransform == null) return;
+
+        Vector3 offset = new Vector3(0f, 15f, -20f); // Yukarı 3 birim, geriye 8 birim
+        thirdPersonCamera.transform.position = boatTransform.position + boatTransform.TransformDirection(offset);
+        thirdPersonCamera.transform.LookAt(boatTransform.position + Vector3.up * 1.5f);
     }
 
     private void HandlePlayerMovement()

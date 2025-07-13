@@ -333,9 +333,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.21846959
-  m_Height: 1.9063382
+  m_Height: 1.8495234
   m_Direction: 1
-  m_Center: {x: 0, y: 0.9, z: 0.035190966}
+  m_Center: {x: 0, y: 0.8715931, z: 0.035190973}
 --- !u!114 &14080532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -351,6 +351,7 @@ MonoBehaviour:
   walkSpeed: 1
   idleTime: 3
   walkTime: 4
+  boatTransform: {fileID: 13577103}
 --- !u!1001 &146563202
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1953,11 +1954,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dcca665fd3960ed4e9800b0df3a5570b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -3.29
+      value: -3.638
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dcca665fd3960ed4e9800b0df3a5570b, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 76.85
+      value: 76.832
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dcca665fd3960ed4e9800b0df3a5570b, type: 3}
       propertyPath: m_LocalRotation.w
